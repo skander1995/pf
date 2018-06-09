@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script src="js/jquery.min.js"></script>
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+	<script type="text/javascript">
+        google.charts.load('current', {'packages':['corechart']});
+        google.charts.setOnLoadCallback(drawChart);
+function drawChart() {
+
+
+        $(document).ready(function () {
+    $.ajax({
+        url : "http://localhost/charts/data.php",
+        type : "GET",
+        dataType :"Json",
+        success : function(data){
+            console.log(data);
+            var datas = new google.visualization.DataTable();
+            datas.addColumn('string', 'defaut');
+            datas.addColumn('number', 'quantite');
+            for (var i=1;i<data.length;i++) {
+                datas.addRow([data[i].defaut,
+                    parseFloat(data[i].quantite)]);
+            }
+            console.log("dddddd: "+datas);
+            var options = {
+                title: 'rebut',
+                width: 900,
+                height: 500,
+            };
+            var chart = new google.visualization.PieChart(document.getElementById('piechart'));
+
+            chart.draw(datas, options);
+
+        },
+        error : function(data) {
+            console.log(data);
+        }
+
+    });
+
+});
+
+}
+        	</script>
+    
+</head>
+<body>
+<!-- Display the pie chart -->
+<div id="piechart"></div>
+</body>
+</html>
